@@ -1,8 +1,26 @@
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.Alipay = factory());
-}(this, (function () {'use strict';
+(function (definition) {
+    "use strict";
+    // CommonJS
+     if (typeof exports === "object" && typeof module === "object") {
+        module.exports = definition();
+    // RequireJS
+    } else if (typeof define === "function" && define.amd) {
+        define(definition);
+    // <script>
+    } else if (typeof window !== "undefined" || typeof self !== "undefined") {
+        // Prefer window over self for add-on scripts. Use self for
+        // non-windowed contexts.
+        var global = typeof window !== "undefined" ? window : self;
+
+        // initialize myPlugin as a global.
+        global.myPlugin = definition();
+
+    } else {
+        throw new Error("This environment was not anticipated by myPlugin,Please file a bug.");
+    }
+})
+(function () 
+        {'use strict';
 
             var axios = window.axios || require('axios');
             /* */
@@ -72,18 +90,19 @@
                 });
             }
 
-            var smartAlipay = function({ store,router }) {
-                this.$store = store;
-                this.router=router;
+            var smartAlipay = function  ({ store,router}) {
+                
+                this.$store = store || 0;
+                this.router=router || '';
                 this.identityInstace = store.state.identity;
-            
+
                 this.stepData = {
                     index: 0,
                     msg: "处理中..."
                 }
-            
+
                 this.KEY_ALIPAYUSERID = "alipayUserId";
-            
+
                 this.isSameAlipayUserId = function(alipayUserId) {
                     return this.identityInstace.alipayUserId == alipayUserId;
                 }
@@ -115,6 +134,7 @@
                     return response;
                 }
             };
+            // console.log(zzszAlipay)
             smartAlipay.prototype.prepareAuth = async function() {
                 this.stepData = {
                     index: 0,
@@ -160,16 +180,16 @@
                     function(result) {
                         if (self.isSameAlipayUserId(result)) {
                             // self.stepData.index = 2;
-                            return self.stepData = { index: 2, msg: self.stepData.msg };
-                            
+                            self.stepData = { index: 2, msg: self.stepData.msg };
+                            return;
                         }
                         // self.stepData.index = 3;
-                        return self.stepData = { index: 3, msg: self.stepData.msg };
+                        self.stepData = { index: 3, msg: self.stepData.msg };
                     },
                     function(error) {
                         // self.stepData.index = 1;
                         // self.stepData.msg = error.memo;
-                        return self.stepData = { index: 1, msg: error.memo };
+                        self.stepData = { index: 1, msg: error.memo };
                     }).finally(function() {
                     self.$store.commit('setStepData', self.stepData);
                 });
@@ -204,10 +224,9 @@
                         self.router.load({ url:'/pay/AlipayResult/',reload:true})
                     },
                     function(error) {
-            
+
                     });
             }
+        }
+)
 
-        })
-    )
-) 
