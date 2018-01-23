@@ -1,0 +1,22 @@
+{
+  "name": "ceshi_01",
+  "version": "1.0.0",
+  "description": "测试node发包及引用",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jiaowoxiaoqi/alipay.git"
+  },
+  "keywords": [
+    "ceshi_01"
+  ],
+  "author": "xiaoqi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jiaowoxiaoqi/alipay/issues"
+  },
+  "homepage": "https://github.com/jiaowoxiaoqi/alipay#readme"
+}
